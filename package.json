@@ -12,8 +12,10 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.23.12",
     "next": "^15.5.0",
+    "next-auth": "^4.24.15",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "typescript": "^5.9.0"

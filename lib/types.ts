@@ -6,6 +6,26 @@ export type Product = {
   image: string;
   color: string;
   featured?: boolean;
+  description?: string;
+  sizes?: string[];
+  colors?: string[];
+  category?: string;
+  bestseller?: boolean;
+  spotifyLink?: string;
+  frontImage?: string;
+  backImage?: string;
+  closeupImage?: string;
+  createdAt?: Date;
+};
+
+export type TeeRequest = {
+  id: string;
+  artistName: string;
+  customerName: string;
+  phone: string;
+  type: string;
+  notes: string;
+  createdAt: Date;
 };
 
 export const artists: Product[] = [
