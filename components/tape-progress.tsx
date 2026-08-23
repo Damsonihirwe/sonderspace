@@ -1,0 +1,3 @@
+'use client';
+import { useEffect, useState } from 'react';
+export function TapeProgress() { const [progress, setProgress] = useState(0); useEffect(() => { const update = () => { const max = document.documentElement.scrollHeight - window.innerHeight; setProgress(max > 0 ? window.scrollY / max * 100 : 0); }; window.addEventListener('scroll', update, { passive: true }); update(); return () => window.removeEventListener('scroll', update); }, []); return <div className="fixed left-0 top-0 z-[60] h-[3px] w-full bg-line"><div className="h-full bg-signal transition-[width] duration-100" style={{ width: `${progress}%` }} /></div>; }
