@@ -1,6 +1,3 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { LoginForm } from '@/components/login-form';
 import { AdminDashboard } from '@/components/admin-dashboard';
 import type { TeeRequest } from '@/lib/types';
 
@@ -26,12 +23,6 @@ const mockRequests: TeeRequest[] = [
   },
 ];
 
-export default async function AdminPage() {
-  const session = await getServerSession();
-
-  if (!session) {
-    return <LoginForm />;
-  }
-
+export default function AdminPage() {
   return <AdminDashboard requests={mockRequests} />;
 }

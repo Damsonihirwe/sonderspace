@@ -8,27 +8,50 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [debugInfo, setDebugInfo] = useState('');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError('');
+    setDebugInfo('');
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      username,
-      password,
-      redirect: false,
-    });
+    try {
+      // First verify credentials via API
+      const verifyRes = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    setLoading(false);
+      if (!verifyRes.ok) {
+        setError('Invalid username or password.');
+        setLoading(false);
+        return;
+      }
 
-    if (result?.error) {
-      setError('Invalid credentials. Please try again.');
-      return;
-    }
+      // Then sign in with NextAuth
+      const result = await signIn('credentials', {
+        username,
+        password,
+        redirect: false,
+      });
 
-    if (result?.ok) {
-      window.location.href = '/admin';
+      setLoading(false);
+
+      if (result?.error) {
+        setError('Login failed. Please try again.');
+        setDebugInfo(`NextAuth error: ${result.error}`);
+        return;
+      }
+
+      if (result?.ok) {
+        window.location.href = '/admin';
+      }
+    } catch (err) {
+      setLoading(false);
+      setError('Something went wrong. Please try again.');
+      setDebugInfo(err instanceof Error ? err.message : 'Unknown error');
     }
   }
 
@@ -47,7 +70,7 @@ export function LoginForm() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username"
+              placeholder="sonderspaceadmin"
               className="mt-2 w-full border-b border-line bg-transparent px-0 py-2 font-space-grotesk text-paper placeholder-grey/50 focus:border-signal focus:outline-none"
               disabled={loading}
               required
@@ -71,6 +94,10 @@ export function LoginForm() {
             <p className="font-mono text-[10px] uppercase tracking-widest text-signal">{error}</p>
           )}
 
+          {debugInfo && (
+            <p className="font-mono text-[9px] uppercase tracking-widest text-paper-dim bg-ink-2 p-2">{debugInfo}</p>
+          )}
+
           <button
             type="submit"
             disabled={loading}
@@ -78,6 +105,12 @@ export function LoginForm() {
           >
             {loading ? 'Signing in...' : 'Sign in'} <span className="float-right">↗</span>
           </button>
+
+          <div className="mt-4 p-4 bg-ink-2 border border-line text-[9px] font-mono text-grey space-y-1">
+            <p><strong>Debug credentials:</strong></p>
+            <p>Username: sonderspaceadmin</p>
+            <p>Password: sonderspace@buystore</p>
+          </div>
         </form>
       </div>
     </div>

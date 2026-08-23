@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { signOut } from 'next-auth/react';
 import type { TeeRequest } from '@/lib/types';
 import { AddProductForm } from './add-product-form';
 import { RequestsList } from './requests-list';
@@ -18,12 +17,6 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
             <h1 className="font-display text-4xl uppercase md:text-5xl">Admin Dashboard</h1>
             <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-grey">Manage requests and products</p>
           </div>
-          <button
-            onClick={() => signOut({ callbackUrl: '/admin' })}
-            className="font-mono text-[10px] uppercase tracking-widest text-grey hover:text-signal transition"
-          >
-            Log out ↗
-          </button>
         </div>
       </div>
 
