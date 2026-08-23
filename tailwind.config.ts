@@ -11,10 +11,10 @@ const config: Config = {
         'paper-dim': 'var(--color-paper-dim)',
         grey: 'var(--color-grey)',
         line: 'var(--color-line)',
-        signal: '#e1402c',
+        signal: 'var(--signal)',
       },
       fontFamily: {
-        display: ['var(--font-anton)'],
+        display: ['var(--font-cormorant)'],
         body: ['var(--font-space-grotesk)'],
         mono: ['var(--font-space-mono)'],
       },
