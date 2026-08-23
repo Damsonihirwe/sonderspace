@@ -5,12 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: '#0b0b0a',
-        'ink-2': '#141412',
-        paper: '#ece8e1',
-        'paper-dim': '#c9c4ba',
-        grey: '#79766f',
-        line: '#2a2a26',
+        ink: 'var(--color-ink)',
+        'ink-2': 'var(--color-ink-2)',
+        paper: 'var(--color-paper)',
+        'paper-dim': 'var(--color-paper-dim)',
+        grey: 'var(--color-grey)',
+        line: 'var(--color-line)',
         signal: '#e1402c',
       },
       fontFamily: {
