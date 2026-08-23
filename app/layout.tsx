@@ -5,6 +5,7 @@ import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
 import { TapeProgress } from '@/components/tape-progress';
 import { ThemeProvider } from '@/components/theme-provider';
+import { RequestTeeButton } from '@/components/request-tee-button';
 
 const cormorant = Cormorant_Garamond({ weight: ['500', '600', '700'], subsets: ['latin'], variable: '--font-cormorant' });
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' });
@@ -13,5 +14,5 @@ const mono = Space_Mono({ weight: ['400', '700'], subsets: ['latin'], variable: 
 export const metadata: Metadata = { title: 'SONDERspace — Wear what you listen to.', description: 'Your favorite artist. Your own tee.' };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${cormorant.variable} ${grotesk.variable} ${mono.variable}`}><body><ThemeProvider><TapeProgress /><Nav />{children}<Footer /></ThemeProvider></body></html>;
+  return <html lang="en" className={`${cormorant.variable} ${grotesk.variable} ${mono.variable}`}><body><ThemeProvider><TapeProgress /><Nav />{children}<RequestTeeButton /><Footer /></ThemeProvider></body></html>;
 }
