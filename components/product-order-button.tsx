@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { buildWhatsAppOrderLink } from '@/lib/whatsapp';
 
-export function ProductOrderButton({ artistName, productTitle, color }: { artistName: string; productTitle: string; color: string }) {
+export function ProductOrderButton({ artistName, productTitle, imageUrl, color }: { artistName: string; productTitle: string; imageUrl: string; color: string }) {
   const [size, setSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
 
   function openWhatsApp() {
     if (!size || !selectedColor) return;
-    window.open(buildWhatsAppOrderLink({ artistName, productTitle, size, color: selectedColor }), '_blank', 'noopener,noreferrer');
+    window.open(buildWhatsAppOrderLink({ artistName, productTitle, imageUrl: new URL(imageUrl, window.location.origin).toString(), size, color: selectedColor }), '_blank', 'noopener,noreferrer');
   }
 
   return <>
