@@ -20,6 +20,43 @@ export function AdminProductsList() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  async function handleDelete(id: string, name: string) {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${name}"? This cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    setDeletingId(id);
+    setError('');
+
+    try {
+      const response = await fetch(`/api/admin/products/${id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete product');
+      }
+
+      setProducts((current) =>
+        current.filter((product) => product.id !== id)
+      );
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to delete product'
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   useEffect(() => {
     async function loadProducts() {
@@ -137,7 +174,7 @@ export function AdminProductsList() {
               </div>
             </div>
 
-            {/* Slug */}
+            {/* Slug + Actions */}
             <div className="border-t border-line pt-4 md:border-t-0 md:border-l md:pl-6 md:pt-0">
               <p className="font-mono text-[9px] uppercase tracking-widest text-grey">
                 Slug
@@ -146,6 +183,33 @@ export function AdminProductsList() {
               <p className="mt-2 break-all font-mono text-[10px] text-paper-dim">
                 {product.slug}
               </p>
+
+              <div className="mt-5 flex gap-3">
+
+                {/* Edit */}
+                <button
+  type="button"
+  onClick={() => setEditingProduct(product)}
+  className="border border-line px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-grey transition hover:border-signal hover:text-signal"
+>
+  Edit
+</button>
+
+                {/* Delete */}
+                <button
+                  type="button"
+                  disabled={deletingId === product.id}
+                  onClick={() =>
+                    handleDelete(product.id, product.name)
+                  }
+                  className="border border-signal px-4 py-2 font-mono text-[9px] uppercase tracking-widest text-signal transition hover:bg-signal hover:text-paper disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {deletingId === product.id
+                    ? 'Deleting...'
+                    : 'Delete'}
+                </button>
+
+              </div>
             </div>
 
           </div>
