@@ -43,3 +43,48 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const requests = await prisma.teeRequest.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const statusOrder = {
+      NEW: 1,
+      APPROVED: 2,
+      COMPLETED: 3,
+      REJECTED: 4,
+    };
+
+    const sortedRequests = requests.sort((a, b) => {
+      const statusA =
+        statusOrder[a.status as keyof typeof statusOrder] || 99;
+
+      const statusB =
+        statusOrder[b.status as keyof typeof statusOrder] || 99;
+
+      if (statusA !== statusB) {
+        return statusA - statusB;
+      }
+
+      return (
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+      );
+    });
+
+    return NextResponse.json(sortedRequests);
+  } catch (error) {
+    console.error('Failed to fetch tee requests:', error);
+
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch requests.',
+      },
+      { status: 500 }
+    );
+  }
+}
