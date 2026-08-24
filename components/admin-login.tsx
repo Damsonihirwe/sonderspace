@@ -10,20 +10,38 @@ export function AdminLogin({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // Temporary credentials for testing.
-    // We will move these into secure environment variables later.
-    if (
-      username === "admin" &&
-      password === "change-me"
-    ) {
-      setError("");
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Invalid username or password.");
+        return;
+      }
+
       onLogin();
-    } else {
-      setError("Invalid username or password.");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -82,9 +100,10 @@ export function AdminLogin({
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-black px-4 py-3 text-white transition-opacity hover:opacity-80"
+            disabled={loading}
+            className="w-full rounded-lg bg-black px-4 py-3 text-white transition-opacity hover:opacity-80 disabled:opacity-50"
           >
-            Sign in
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
       </div>
