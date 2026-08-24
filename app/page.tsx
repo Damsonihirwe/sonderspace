@@ -30,8 +30,8 @@ export default async function Home() {
     color: product.color,
     featured: product.featured,
     description: product.description,
-    sizes: JSON.parse(product.sizes),
-    colors: JSON.parse(product.colors),
+    sizes: JSON.parse(product.sizes || '[]'),
+    colors: JSON.parse(product.colors || '[]'),
     category: product.category,
     bestseller: product.bestseller,
     spotifyLink: product.spotifyLink,
@@ -46,13 +46,23 @@ export default async function Home() {
 
   return (
     <main>
+
+      {/* =========================
+          HERO
+      ========================= */}
+
       <section className="relative overflow-hidden border-b border-line px-5 pb-12 pt-28 md:px-10 md:pb-16 md:pt-32">
+
         <div className="noise absolute inset-0 opacity-30" />
 
         <div className="absolute right-[-12%] top-[8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,_rgba(225,64,44,.13),_transparent_62%)]" />
 
         <div className="relative mx-auto grid min-h-[calc(100vh-8rem)] max-w-[1440px] items-end gap-10 lg:grid-cols-[1.05fr_.95fr]">
+
+          {/* HERO TEXT */}
+
           <div className="pb-2">
+
             <div className="mb-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[.2em] text-grey">
               <span className="h-2 w-2 bg-signal" />
               Independent artist apparel / 001
@@ -65,12 +75,14 @@ export default async function Home() {
             </h1>
 
             <div className="mt-10 max-w-[560px] border-t border-line pt-5">
+
               <p className="max-w-[390px] text-lg leading-snug text-paper-dim">
                 Choose the artist. Tell us who you want. We design it. You wear
                 it.
               </p>
 
               <div className="mt-8 flex flex-wrap items-end gap-8">
+
                 <Waveform />
 
                 <Link
@@ -79,53 +91,83 @@ export default async function Home() {
                 >
                   Start a request ↗
                 </Link>
+
               </div>
             </div>
           </div>
 
+          {/* HERO PRODUCT */}
+
           {heroProduct && (
             <div className="relative mx-auto w-full max-w-[600px] self-center lg:ml-auto">
+
               <div className="absolute -left-3 top-8 z-10 bg-signal px-3 py-2 font-mono text-[9px] uppercase tracking-widest text-paper md:-left-5">
                 Back design / 001
               </div>
 
-              <div className="relative aspect-[4/5] overflow-hidden bg-ink-2">
-                {heroProduct.image ? (
-                  <Image
-                    src={heroProduct.image}
-                    alt={`${heroProduct.name} SONDERspace tee`}
-                    fill
-                    priority
-                    className="object-cover grayscale-[.15] transition duration-700 hover:scale-[1.03]"
-                    sizes="(max-width: 1024px) 90vw, 48vw"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center font-mono text-[10px] uppercase tracking-widest text-grey">
-                    No image
-                  </div>
-                )}
+              <Link
+                href={`/shop/${heroProduct.slug}`}
+                className="block"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-ink-2">
 
-                <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent p-5 pt-20">
-                  <div>
-                    <p className="font-display text-4xl uppercase">
-                      {heroProduct.name}
-                    </p>
+                  {(heroProduct.frontImage || heroProduct.image) ? (
+                    <Image
+                      src={
+                        heroProduct.frontImage ||
+                        heroProduct.image
+                      }
+                      alt={`${heroProduct.name} SONDERspace tee`}
+                      fill
+                      priority
+                      unoptimized
+                      className="object-cover grayscale-[.15] transition duration-700 hover:scale-[1.03]"
+                      sizes="(max-width: 1024px) 90vw, 48vw"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center font-mono text-[10px] uppercase tracking-widest text-grey">
+                      No image
+                    </div>
+                  )}
 
-                    <p className="font-mono text-[9px] uppercase tracking-widest text-paper-dim">
-                      Artist series / heavyweight cotton
-                    </p>
+                  <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent p-5 pt-20">
+
+                    <div>
+
+                      <p className="font-display text-4xl uppercase">
+                        {heroProduct.name}
+                      </p>
+
+                      <p className="font-mono text-[9px] uppercase tracking-widest text-paper-dim">
+                        Artist series / heavyweight cotton
+                      </p>
+
+                    </div>
+
                   </div>
+
                 </div>
-              </div>
+              </Link>
+
+              {/* SECOND PRODUCT */}
 
               {secondProduct && (
-                <div className="absolute -bottom-5 -right-3 w-28 border-4 border-ink bg-ink-2 p-1 md:-right-8 md:w-36">
+                <Link
+                  href={`/shop/${secondProduct.slug}`}
+                  className="absolute -bottom-5 -right-3 w-28 border-4 border-ink bg-ink-2 p-1 md:-right-8 md:w-36"
+                >
+
                   <div className="relative aspect-square overflow-hidden">
-                    {secondProduct.image ? (
+
+                    {(secondProduct.frontImage || secondProduct.image) ? (
                       <Image
-                        src={secondProduct.image}
+                        src={
+                          secondProduct.frontImage ||
+                          secondProduct.image
+                        }
                         alt={`${secondProduct.name} SONDERspace tee detail`}
                         fill
+                        unoptimized
                         className="object-cover"
                         sizes="144px"
                       />
@@ -134,21 +176,32 @@ export default async function Home() {
                         No image
                       </div>
                     )}
+
                   </div>
 
                   <p className="px-1 py-2 font-mono text-[8px] uppercase tracking-widest text-paper-dim">
                     Next cut / 002
                   </p>
-                </div>
+
+                </Link>
               )}
+
             </div>
           )}
+
         </div>
       </section>
 
+      {/* =========================
+          HOW IT WORKS
+      ========================= */}
+
       <section className="border-b border-line px-5 py-16 md:px-10 md:py-24">
+
         <div className="mx-auto max-w-[1440px]">
+
           <div className="mb-12 flex items-end justify-between border-b border-line pb-4">
+
             <h2 className="font-display text-5xl uppercase md:text-7xl">
               How it works
             </h2>
@@ -156,14 +209,18 @@ export default async function Home() {
             <span className="hidden max-w-[180px] text-right text-sm text-grey md:block">
               A simple process for a very personal piece.
             </span>
+
           </div>
 
           <div className="grid md:grid-cols-5">
+
             {steps.map((step, index) => (
+
               <div
                 key={step}
                 className="border-l border-line px-4 py-5 first:border-l-0 md:min-h-40"
               >
+
                 <span className="font-mono text-[10px] text-signal">
                   0{index + 1}
                 </span>
@@ -171,15 +228,27 @@ export default async function Home() {
                 <p className="mt-8 max-w-24 font-display text-2xl uppercase leading-none">
                   {step}
                 </p>
+
               </div>
+
             ))}
+
           </div>
+
         </div>
+
       </section>
 
+      {/* =========================
+          ARTIST WALL
+      ========================= */}
+
       <section className="border-b border-line px-5 py-16 md:px-10 md:py-24">
+
         <div className="mx-auto max-w-[1440px]">
+
           <div className="mb-10 flex items-end justify-between border-b border-line pb-4">
+
             <h2 className="font-display text-5xl uppercase md:text-7xl">
               The artist wall
             </h2>
@@ -190,19 +259,46 @@ export default async function Home() {
             >
               View all artists ↗
             </Link>
+
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-8">
-            {products.slice(0, 6).map((artist) => (
-              <DiscCard key={artist.slug} artist={artist} />
-            ))}
-          </div>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-8">
+
+              {products
+                .slice(0, 6)
+                .map((product) => (
+                  <DiscCard
+                    key={product.slug}
+                    artist={product}
+                  />
+                ))}
+
+            </div>
+          ) : (
+            <div className="border border-line p-12 text-center">
+
+              <p className="font-mono text-[10px] uppercase tracking-widest text-grey">
+                No artists available yet
+              </p>
+
+            </div>
+          )}
+
         </div>
+
       </section>
 
+      {/* =========================
+          LATEST CUTS
+      ========================= */}
+
       <section className="bg-paper px-5 py-16 text-ink md:px-10 md:py-24">
+
         <div className="mx-auto max-w-[1440px]">
+
           <div className="mb-10 flex items-end justify-between border-b border-ink/20 pb-4">
+
             <h2 className="font-display text-5xl uppercase md:text-7xl">
               The latest cuts
             </h2>
@@ -213,22 +309,46 @@ export default async function Home() {
             >
               Shop collection ↗
             </Link>
+
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {products.slice(0, 4).map((product) => (
-              <ProductCard
-                key={product.slug}
-                product={product}
-              />
-            ))}
-          </div>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+
+              {products
+                .slice(0, 4)
+                .map((product) => (
+                  <ProductCard
+                    key={product.slug}
+                    product={product}
+                  />
+                ))}
+
+            </div>
+          ) : (
+            <div className="border border-ink/20 p-12 text-center">
+
+              <p className="font-mono text-[10px] uppercase tracking-widest text-ink/60">
+                No products available yet
+              </p>
+
+            </div>
+          )}
+
         </div>
+
       </section>
 
+      {/* =========================
+          REQUEST SECTION
+      ========================= */}
+
       <section className="px-5 py-20 md:px-10 md:py-32">
+
         <div className="mx-auto grid max-w-[1440px] gap-12 md:grid-cols-[1fr_1fr] md:items-end">
+
           <div>
+
             <span className="font-mono text-[10px] uppercase tracking-widest text-signal">
               Never on repeat
             </span>
@@ -236,9 +356,11 @@ export default async function Home() {
             <h2 className="mt-5 max-w-xl font-display text-6xl uppercase leading-[.88] md:text-8xl">
               Don&apos;t see your artist?
             </h2>
+
           </div>
 
           <div>
+
             <p className="mb-8 max-w-sm text-lg text-paper-dim">
               Bring us the song that stays with you. We&apos;ll turn it into
               something you can keep on.
@@ -250,9 +372,13 @@ export default async function Home() {
             >
               Make a request ↗
             </Link>
+
           </div>
+
         </div>
+
       </section>
+
     </main>
   );
 }

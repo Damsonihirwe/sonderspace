@@ -24,6 +24,8 @@ export default async function ProductPage({
   return (
     <main className="px-5 pb-24 pt-36 md:px-10">
       <div className="mx-auto max-w-[1440px]">
+
+        {/* BACK TO SHOP */}
         <Link
           href="/shop"
           className="font-mono text-[10px] uppercase tracking-widest text-grey hover:text-signal"
@@ -32,17 +34,26 @@ export default async function ProductPage({
         </Link>
 
         <div className="mt-8 grid gap-10 md:grid-cols-[1.2fr_.8fr]">
+
+          {/* =========================
+              PRODUCT IMAGES
+          ========================= */}
+
           <div className="grid grid-cols-2 gap-3">
+
+            {/* FRONT IMAGE */}
             <div className="relative col-span-2 aspect-[4/3] bg-ink-2">
               <Image
                 src={product.frontImage || product.image}
-                alt={`${product.name} product`}
+                alt={`${product.name} front`}
                 fill
                 className="object-cover"
                 sizes="70vw"
+                unoptimized
               />
             </div>
 
+            {/* BACK IMAGE */}
             <div className="relative aspect-square bg-ink-2">
               <Image
                 src={product.backImage || product.image}
@@ -50,9 +61,11 @@ export default async function ProductPage({
                 fill
                 className="object-cover"
                 sizes="35vw"
+                unoptimized
               />
             </div>
 
+            {/* CLOSEUP IMAGE */}
             <div className="relative aspect-square bg-ink-2">
               <Image
                 src={product.closeupImage || product.image}
@@ -60,11 +73,18 @@ export default async function ProductPage({
                 fill
                 className="object-cover"
                 sizes="35vw"
+                unoptimized
               />
             </div>
+
           </div>
 
+          {/* =========================
+              PRODUCT INFORMATION
+          ========================= */}
+
           <div className="md:pl-8">
+
             <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
               Artist series / 001
             </p>
@@ -73,30 +93,43 @@ export default async function ProductPage({
               {product.name}
             </h1>
 
-            <p className="mt-5 font-mono text-xs uppercase tracking-widest text-grey">
-              {product.genre || 'Heavyweight cotton'}
-            </p>
+            {product.genre && (
+              <p className="mt-5 font-mono text-xs uppercase tracking-widest text-grey">
+                {product.genre}
+              </p>
+            )}
 
+            {/* PRICE */}
             <p className="mt-4 font-mono text-lg uppercase tracking-widest">
               {product.price}
             </p>
 
+            {/* DESCRIPTION */}
             {product.description && (
               <p className="mt-6 text-lg text-paper-dim">
                 {product.description}
               </p>
             )}
 
+            {/* =========================
+                ORDER BUTTON
+            ========================= */}
+
             <div className="mt-12 border-t border-line pt-5">
               <ProductOrderButton
                 artistName={product.name}
                 productTitle={product.name}
-                imageUrl={product.image}
+                imageUrl={product.frontImage || product.image}
                 color={product.color}
               />
             </div>
 
+            {/* =========================
+                SPOTIFY
+            ========================= */}
+
             <div className="mt-12 border-t border-line pt-5">
+
               <p className="font-mono text-[10px] uppercase tracking-widest text-grey">
                 The sound
               </p>
@@ -115,7 +148,9 @@ export default async function ProductPage({
                   Listen on Spotify ↗
                 </a>
               )}
+
             </div>
+
           </div>
         </div>
       </div>
