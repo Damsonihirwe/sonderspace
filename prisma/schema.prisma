@@ -14,7 +14,9 @@ model TeeRequest {
   phone        String
   type         String
   notes        String
+  status       String   @default("NEW")
   createdAt    DateTime @default(now())
 
   @@index([createdAt])
+  @@index([status])
 }

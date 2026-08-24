@@ -25,6 +25,7 @@ export type TeeRequest = {
   phone: string;
   type: string;
   notes: string;
+  status: string;
   createdAt: Date;
 };
 
