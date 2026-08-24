@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 
-export function AdminLogin({
-  onLogin,
-}: {
-  onLogin: () => void;
-}) {
+export function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,7 +33,7 @@ export function AdminLogin({
         return;
       }
 
-      onLogin();
+      window.location.href = "/admin";
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

@@ -9,6 +9,7 @@ export async function POST(request: Request) {
 
     if (!adminUsername || !adminPassword) {
       console.error("Admin credentials are not configured.");
+
       return NextResponse.json(
         { error: "Server configuration error." },
         { status: 500 }
@@ -25,9 +26,19 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
     });
+
+    response.cookies.set("sonderspace_admin", "authenticated", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 24 hours
+    });
+
+    return response;
   } catch {
     return NextResponse.json(
       { error: "Invalid request." },

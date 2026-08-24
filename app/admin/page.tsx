@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { cookies } from "next/headers";
 import { AdminDashboard } from "@/components/admin-dashboard";
 import { AdminLogin } from "@/components/admin-login";
 import type { TeeRequest } from "@/lib/types";
@@ -27,11 +25,13 @@ const mockRequests: TeeRequest[] = [
   },
 ];
 
-export default function AdminPage() {
-  const [loggedIn, setLoggedIn] = useState(false);
+export default async function AdminPage() {
+  const cookieStore = await cookies();
+  const isAuthenticated =
+    cookieStore.get("sonderspace_admin")?.value === "authenticated";
 
-  if (!loggedIn) {
-    return <AdminLogin onLogin={() => setLoggedIn(true)} />;
+  if (!isAuthenticated) {
+    return <AdminLogin />;
   }
 
   return <AdminDashboard requests={mockRequests} />;
