@@ -4,9 +4,17 @@ import { useState } from 'react';
 import type { TeeRequest } from '@/lib/types';
 import { AddProductForm } from './add-product-form';
 import { RequestsList } from './requests-list';
+import { AdminProductsList } from './admin-products-list';
 
-export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
-  const [activeTab, setActiveTab] = useState<'requests' | 'add-product'>('requests');
+export function AdminDashboard({
+  requests,
+}: {
+  requests: TeeRequest[];
+}) {
+  const [activeTab, setActiveTab] = useState<
+    'requests' | 'products' | 'add-product'
+  >('requests');
+
   const [loggingOut, setLoggingOut] = useState(false);
 
   async function handleLogout() {
@@ -27,7 +35,7 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
     <div className="min-h-screen bg-ink text-paper">
       {/* Header */}
       <div className="border-b border-line px-5 py-8 md:px-10">
-        <div className="mx-auto max-w-[1440px] flex items-center justify-between gap-6">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6">
           <div>
             <h1 className="font-display text-4xl uppercase md:text-5xl">
               Admin Dashboard
@@ -38,7 +46,6 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
             </p>
           </div>
 
-          {/* Logout */}
           <button
             onClick={handleLogout}
             disabled={loggingOut}
@@ -51,10 +58,12 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
 
       {/* Tabs */}
       <div className="border-b border-line px-5 md:px-10">
-        <div className="mx-auto max-w-[1440px] flex gap-8">
+        <div className="mx-auto flex max-w-[1440px] gap-8">
+
+          {/* Requests */}
           <button
             onClick={() => setActiveTab('requests')}
-            className={`py-4 font-mono text-[10px] uppercase tracking-widest border-b-2 transition ${
+            className={`border-b-2 py-4 font-mono text-[10px] uppercase tracking-widest transition ${
               activeTab === 'requests'
                 ? 'border-signal text-signal'
                 : 'border-transparent text-grey hover:text-paper'
@@ -63,9 +72,22 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
             Requests ({requests.length})
           </button>
 
+          {/* Products */}
+          <button
+            onClick={() => setActiveTab('products')}
+            className={`border-b-2 py-4 font-mono text-[10px] uppercase tracking-widest transition ${
+              activeTab === 'products'
+                ? 'border-signal text-signal'
+                : 'border-transparent text-grey hover:text-paper'
+            }`}
+          >
+            Products
+          </button>
+
+          {/* Add Product */}
           <button
             onClick={() => setActiveTab('add-product')}
-            className={`py-4 font-mono text-[10px] uppercase tracking-widest border-b-2 transition ${
+            className={`border-b-2 py-4 font-mono text-[10px] uppercase tracking-widest transition ${
               activeTab === 'add-product'
                 ? 'border-signal text-signal'
                 : 'border-transparent text-grey hover:text-paper'
@@ -73,14 +95,26 @@ export function AdminDashboard({ requests }: { requests: TeeRequest[] }) {
           >
             Add Product
           </button>
+
         </div>
       </div>
 
       {/* Content */}
       <div className="px-5 py-12 md:px-10">
         <div className="mx-auto max-w-[1440px]">
-          {activeTab === 'requests' && <RequestsList requests={requests} />}
-          {activeTab === 'add-product' && <AddProductForm />}
+
+          {activeTab === 'requests' && (
+            <RequestsList requests={requests} />
+          )}
+
+          {activeTab === 'products' && (
+  <AdminProductsList />
+)}
+
+          {activeTab === 'add-product' && (
+            <AddProductForm />
+          )}
+
         </div>
       </div>
     </div>

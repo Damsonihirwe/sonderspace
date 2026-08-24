@@ -1,16 +1,258 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { artists } from '@/lib/types';
+import { prisma } from '@/lib/prisma';
 import { Waveform } from '@/components/waveform';
 import { DiscCard } from '@/components/disc-card';
 import { ProductCard } from '@/components/product-card';
+import type { Product } from '@/lib/types';
 
-const steps = ['Pick your artist', 'Tell us who', 'We design it', 'We make it', 'We deliver'];
+const steps = [
+  'Pick your artist',
+  'Tell us who',
+  'We design it',
+  'We make it',
+  'We deliver',
+];
 
-export default function Home() { return <main>
-  <section className="relative overflow-hidden border-b border-line px-5 pb-12 pt-28 md:px-10 md:pb-16 md:pt-32"><div className="noise absolute inset-0 opacity-30" /><div className="absolute right-[-12%] top-[8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,_rgba(225,64,44,.13),_transparent_62%)]" /><div className="relative mx-auto grid min-h-[calc(100vh-8rem)] max-w-[1440px] items-end gap-10 lg:grid-cols-[1.05fr_.95fr]"><div className="pb-2"><div className="mb-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[.2em] text-grey"><span className="h-2 w-2 bg-signal" /> Independent artist apparel / 001</div><h1 className="max-w-[780px] font-display text-[clamp(4rem,8.5vw,8.5rem)] uppercase leading-[.82] tracking-[-.02em]">Your favorite<br />artist. <span className="text-signal">Your own tee.</span></h1><div className="mt-10 max-w-[560px] border-t border-line pt-5"><p className="max-w-[390px] text-lg leading-snug text-paper-dim">Choose the artist. Tell us who you want. We design it. You wear it.</p><div className="mt-8 flex flex-wrap items-end gap-8"><Waveform /><Link href="/request" className="border border-paper px-5 py-3 font-mono text-[10px] uppercase tracking-widest transition hover:bg-paper hover:text-ink">Start a request ↗</Link></div></div></div><div className="relative mx-auto w-full max-w-[600px] self-center lg:ml-auto"><div className="absolute -left-3 top-8 z-10 bg-signal px-3 py-2 font-mono text-[9px] uppercase tracking-widest text-paper md:-left-5">Back design / 001</div><div className="relative aspect-[4/5] overflow-hidden bg-ink-2"><Image src={artists[0].image} alt="Frank Ocean SONDERspace tee" fill priority className="object-cover grayscale-[.15] transition duration-700 hover:scale-[1.03]" sizes="(max-width: 1024px) 90vw, 48vw" /><div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent p-5 pt-20"><div><p className="font-display text-4xl uppercase">Frank Ocean</p><p className="font-mono text-[9px] uppercase tracking-widest text-paper-dim">Artist series / heavyweight cotton</p></div></div></div><div className="absolute -bottom-5 -right-3 w-28 border-4 border-ink bg-ink-2 p-1 md:-right-8 md:w-36"><div className="relative aspect-square overflow-hidden"><Image src={artists[1].image} alt="Central Cee SONDERspace tee detail" fill className="object-cover" sizes="144px" /></div><p className="px-1 py-2 font-mono text-[8px] uppercase tracking-widest text-paper-dim">Next cut / 002</p></div></div></div></section>
-  <section className="border-b border-line px-5 py-16 md:px-10 md:py-24"><div className="mx-auto max-w-[1440px]"><div className="mb-12 flex items-end justify-between border-b border-line pb-4"><h2 className="font-display text-5xl uppercase md:text-7xl">How it works</h2><span className="hidden max-w-[180px] text-right text-sm text-grey md:block">A simple process for a very personal piece.</span></div><div className="grid md:grid-cols-5">{steps.map((step, index) => <div key={step} className="border-l border-line px-4 py-5 first:border-l-0 md:min-h-40"><span className="font-mono text-[10px] text-signal">0{index + 1}</span><p className="mt-8 max-w-24 font-display text-2xl uppercase leading-none">{step}</p></div>)}</div></div></section>
-  <section className="border-b border-line px-5 py-16 md:px-10 md:py-24"><div className="mx-auto max-w-[1440px]"><div className="mb-10 flex items-end justify-between border-b border-line pb-4"><h2 className="font-display text-5xl uppercase md:text-7xl">The artist wall</h2><Link href="/artists" className="font-mono text-[10px] uppercase tracking-widest text-grey hover:text-signal">View all artists ↗</Link></div><div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-8">{artists.slice(0, 6).map((artist) => <DiscCard key={artist.slug} artist={artist} />)}</div></div></section>
-  <section className="bg-paper px-5 py-16 text-ink md:px-10 md:py-24"><div className="mx-auto max-w-[1440px]"><div className="mb-10 flex items-end justify-between border-b border-ink/20 pb-4"><h2 className="font-display text-5xl uppercase md:text-7xl">The latest cuts</h2><Link href="/shop" className="font-mono text-[10px] uppercase tracking-widest text-ink/60 hover:text-signal">Shop collection ↗</Link></div><div className="grid grid-cols-2 gap-3 md:grid-cols-4">{artists.slice(0, 4).map((artist) => <ProductCard key={artist.slug} product={artist} />)}</div></div></section>
-  <section className="px-5 py-20 md:px-10 md:py-32"><div className="mx-auto grid max-w-[1440px] gap-12 md:grid-cols-[1fr_1fr] md:items-end"><div><span className="font-mono text-[10px] uppercase tracking-widest text-signal">Never on repeat</span><h2 className="mt-5 max-w-xl font-display text-6xl uppercase leading-[.88] md:text-8xl">Don&apos;t see your artist?</h2></div><div><p className="mb-8 max-w-sm text-lg text-paper-dim">Bring us the song that stays with you. We&apos;ll turn it into something you can keep on.</p><Link href="/request" className="inline-block border border-paper px-6 py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-paper hover:text-ink">Make a request ↗</Link></div></div></section>
-</main>; }
+export default async function Home() {
+  const dbProducts = await prisma.product.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const products: Product[] = dbProducts.map((product) => ({
+    name: product.name,
+    slug: product.slug,
+    genre: product.genre,
+    price: product.price,
+    image: product.image,
+    color: product.color,
+    featured: product.featured,
+    description: product.description,
+    sizes: JSON.parse(product.sizes),
+    colors: JSON.parse(product.colors),
+    category: product.category,
+    bestseller: product.bestseller,
+    spotifyLink: product.spotifyLink,
+    frontImage: product.frontImage,
+    backImage: product.backImage,
+    closeupImage: product.closeupImage,
+    createdAt: product.createdAt,
+  }));
+
+  const heroProduct = products[0];
+  const secondProduct = products[1];
+
+  return (
+    <main>
+      <section className="relative overflow-hidden border-b border-line px-5 pb-12 pt-28 md:px-10 md:pb-16 md:pt-32">
+        <div className="noise absolute inset-0 opacity-30" />
+
+        <div className="absolute right-[-12%] top-[8%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,_rgba(225,64,44,.13),_transparent_62%)]" />
+
+        <div className="relative mx-auto grid min-h-[calc(100vh-8rem)] max-w-[1440px] items-end gap-10 lg:grid-cols-[1.05fr_.95fr]">
+          <div className="pb-2">
+            <div className="mb-10 flex items-center gap-4 font-mono text-[10px] uppercase tracking-[.2em] text-grey">
+              <span className="h-2 w-2 bg-signal" />
+              Independent artist apparel / 001
+            </div>
+
+            <h1 className="max-w-[780px] font-display text-[clamp(4rem,8.5vw,8.5rem)] uppercase leading-[.82] tracking-[-.02em]">
+              Your favorite
+              <br />
+              artist. <span className="text-signal">Your own tee.</span>
+            </h1>
+
+            <div className="mt-10 max-w-[560px] border-t border-line pt-5">
+              <p className="max-w-[390px] text-lg leading-snug text-paper-dim">
+                Choose the artist. Tell us who you want. We design it. You wear
+                it.
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-end gap-8">
+                <Waveform />
+
+                <Link
+                  href="/request"
+                  className="border border-paper px-5 py-3 font-mono text-[10px] uppercase tracking-widest transition hover:bg-paper hover:text-ink"
+                >
+                  Start a request ↗
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {heroProduct && (
+            <div className="relative mx-auto w-full max-w-[600px] self-center lg:ml-auto">
+              <div className="absolute -left-3 top-8 z-10 bg-signal px-3 py-2 font-mono text-[9px] uppercase tracking-widest text-paper md:-left-5">
+                Back design / 001
+              </div>
+
+              <div className="relative aspect-[4/5] overflow-hidden bg-ink-2">
+                {heroProduct.image ? (
+                  <Image
+                    src={heroProduct.image}
+                    alt={`${heroProduct.name} SONDERspace tee`}
+                    fill
+                    priority
+                    className="object-cover grayscale-[.15] transition duration-700 hover:scale-[1.03]"
+                    sizes="(max-width: 1024px) 90vw, 48vw"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center font-mono text-[10px] uppercase tracking-widest text-grey">
+                    No image
+                  </div>
+                )}
+
+                <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-ink/80 to-transparent p-5 pt-20">
+                  <div>
+                    <p className="font-display text-4xl uppercase">
+                      {heroProduct.name}
+                    </p>
+
+                    <p className="font-mono text-[9px] uppercase tracking-widest text-paper-dim">
+                      Artist series / heavyweight cotton
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {secondProduct && (
+                <div className="absolute -bottom-5 -right-3 w-28 border-4 border-ink bg-ink-2 p-1 md:-right-8 md:w-36">
+                  <div className="relative aspect-square overflow-hidden">
+                    {secondProduct.image ? (
+                      <Image
+                        src={secondProduct.image}
+                        alt={`${secondProduct.name} SONDERspace tee detail`}
+                        fill
+                        className="object-cover"
+                        sizes="144px"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-[8px] uppercase text-grey">
+                        No image
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="px-1 py-2 font-mono text-[8px] uppercase tracking-widest text-paper-dim">
+                    Next cut / 002
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="border-b border-line px-5 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mb-12 flex items-end justify-between border-b border-line pb-4">
+            <h2 className="font-display text-5xl uppercase md:text-7xl">
+              How it works
+            </h2>
+
+            <span className="hidden max-w-[180px] text-right text-sm text-grey md:block">
+              A simple process for a very personal piece.
+            </span>
+          </div>
+
+          <div className="grid md:grid-cols-5">
+            {steps.map((step, index) => (
+              <div
+                key={step}
+                className="border-l border-line px-4 py-5 first:border-l-0 md:min-h-40"
+              >
+                <span className="font-mono text-[10px] text-signal">
+                  0{index + 1}
+                </span>
+
+                <p className="mt-8 max-w-24 font-display text-2xl uppercase leading-none">
+                  {step}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line px-5 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mb-10 flex items-end justify-between border-b border-line pb-4">
+            <h2 className="font-display text-5xl uppercase md:text-7xl">
+              The artist wall
+            </h2>
+
+            <Link
+              href="/artists"
+              className="font-mono text-[10px] uppercase tracking-widest text-grey hover:text-signal"
+            >
+              View all artists ↗
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-8">
+            {products.slice(0, 6).map((artist) => (
+              <DiscCard key={artist.slug} artist={artist} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-paper px-5 py-16 text-ink md:px-10 md:py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mb-10 flex items-end justify-between border-b border-ink/20 pb-4">
+            <h2 className="font-display text-5xl uppercase md:text-7xl">
+              The latest cuts
+            </h2>
+
+            <Link
+              href="/shop"
+              className="font-mono text-[10px] uppercase tracking-widest text-ink/60 hover:text-signal"
+            >
+              Shop collection ↗
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            {products.slice(0, 4).map((product) => (
+              <ProductCard
+                key={product.slug}
+                product={product}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 py-20 md:px-10 md:py-32">
+        <div className="mx-auto grid max-w-[1440px] gap-12 md:grid-cols-[1fr_1fr] md:items-end">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-signal">
+              Never on repeat
+            </span>
+
+            <h2 className="mt-5 max-w-xl font-display text-6xl uppercase leading-[.88] md:text-8xl">
+              Don&apos;t see your artist?
+            </h2>
+          </div>
+
+          <div>
+            <p className="mb-8 max-w-sm text-lg text-paper-dim">
+              Bring us the song that stays with you. We&apos;ll turn it into
+              something you can keep on.
+            </p>
+
+            <Link
+              href="/request"
+              className="inline-block border border-paper px-6 py-4 font-mono text-[10px] uppercase tracking-widest hover:bg-paper hover:text-ink"
+            >
+              Make a request ↗
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

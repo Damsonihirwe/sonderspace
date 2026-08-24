@@ -20,3 +20,26 @@ model TeeRequest {
   @@index([createdAt])
   @@index([status])
 }
+model Product {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  genre        String
+  price        String
+  image        String
+  color        String
+  featured     Boolean  @default(false)
+  description  String
+  sizes        String
+  colors       String
+  category     String
+  bestseller   Boolean  @default(false)
+  spotifyLink  String
+  frontImage   String
+  backImage    String
+  closeupImage String
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([category])
+}
